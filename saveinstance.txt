@@ -62,6 +62,8 @@ do
 		filename
 	)()
 
+	global_container = getgenv()
+
 	finder({
 		-- readbinarystring = 'string.find(...,"bin",nil,true)', -- ! Could match some unwanted stuff (getbinaryindex)
 		-- request = 'string.find(...,"request",nil,true) and not string.find(...,"internal",nil,true)',
