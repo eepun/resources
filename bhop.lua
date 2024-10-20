@@ -201,8 +201,6 @@ function run(hitPosition)
 	local VelocityForce = getMovementVelocityForce()
 	movementVelocity.maxForce = VelocityForce
 	movementVelocity.P = movementVelocityP
-
-	print(playerSpeed)
 end
 
 function getMovementVelocity(prevVelocity, accelerate, maxVelocity)
