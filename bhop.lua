@@ -84,6 +84,21 @@ function initBodyMovers()
 	gravityForce.force = Vector3.new(0, (1-gravity)*196.2, 0) * getCharacterMass()
 end
 
+function undoBodyMovers()
+    -- Check if the instances exist and destroy them if they do
+    if collider:FindFirstChild("movementPosition") then
+        collider.movementPosition:Destroy()
+    end
+
+    if collider:FindFirstChild("movementVelocity") then
+        collider.movementVelocity:Destroy()
+    end
+
+    if collider:FindFirstChild("gravityForce") then
+        collider.gravityForce:Destroy()
+    end
+end
+
 function update(deltaTime)
 	dt = deltaTime
 	updateMoveInputSum()
@@ -312,6 +327,9 @@ function resetPlayerMovement()
 	
 end
 
+inputBeganConnection = nil
+inputEndedConnection = nil
+
 function main()
 	local a = plr.Character:FindFirstChildOfClass("Humanoid") or plr.Character:WaitForChild("Humanoid");
 	a.PlatformStand = true
@@ -322,12 +340,30 @@ function main()
 	resetPlayerMovement() -- Reset player movement upon respawn
 		
 	--connect input
-	UserInputService.InputBegan:connect(onInput);
-	UserInputService.InputEnded:connect(onInput);
+	inputBeganConnection = UserInputService.InputBegan:connect(onInput);
+	inputEndedConnection = UserInputService.InputEnded:connect(onInput);
 	--connect updateloop
 	game:GetService("RunService"):BindToRenderStep("updateLoop", 1, updateLoop);
 	
 	--rip
+end
+
+function undo()
+    local a = plr.Character:FindFirstChildOfClass("Humanoid") or plr.Character:WaitForChild("Humanoid");
+    a.PlatformStand = false -- Reset PlatformStand
+
+    -- Disconnect the input connections if they were stored
+    if inputBeganConnection then
+        inputBeganConnection:Disconnect()
+    end
+    if inputEndedConnection then
+        inputEndedConnection:Disconnect()
+    end
+
+    -- Unbind the update loop from the render step
+    game:GetService("RunService"):UnbindFromRenderStep("updateLoop")
+
+	undoBodyMovers()
 end
 
 local prevUpdateTime = nil
@@ -347,4 +383,4 @@ function updateLoop()
 	update(updateDT);
 end
 
-return main
+return {main,undo}
