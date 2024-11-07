@@ -92,7 +92,7 @@ local appendfile = appendfile
 local readfile = readfile
 local writefile = writefile
 
-local getscriptbytecode = global_container.getscriptbytecode -- * A lot of assumptions are made based on whether this function is defined or not. So in certain edge cases, like if the executor defines "decompile" or "getscripthash" function yet doesn't define this function there might be loss of functionality of the saveinstance. Although that would be very rare and weird
+local getscriptbytecode = global_container.getscriptbytecode -- * A lot of assumptions are made based on whether this function is defined or not. So in certain edge cases, like if the executor defines "" or "getscripthash" function yet doesn't define this function there might be loss of functionality of the saveinstance. Although that would be very rare and weird
 local base64encode = global_container.base64encode
 local sha384
 
@@ -203,7 +203,7 @@ do -- * Load Region of Déjà Vu
 	end
 end
 
-local custom_decompiler
+local custom_r
 
 -- if getscriptbytecode then
 -- end
@@ -1353,7 +1353,7 @@ local function synsaveinstance(CustomOptions, CustomOptions2)
 
 	local OPTIONS = {
 		mode = "optimized",
-		noscripts = false,
+		noscripts = true,
 		scriptcache = true,
 		decomptype = "",
 		timeout = 10,
