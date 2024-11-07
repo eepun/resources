@@ -2060,9 +2060,14 @@ local function synsaveinstance(CustomOptions, CustomOptions2)
 	end
 
 	local function ReturnValueAndTag(raw, valueType, descriptor)
-		local value, tag = (descriptor or XML_Descriptors[valueType])(raw)
-
-		return value, tag == nil and valueType or tag
+		local suc,err = pcall(function()
+			local value, tag = (descriptor or XML_Descriptors[valueType])(raw)
+	
+			return value, tag == nil and valueType or tag
+		end)
+		if not suc then
+			return nil
+		end
 	end
 
 	local function InheritsFix(fixes, className, instance)
