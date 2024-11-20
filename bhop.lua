@@ -332,7 +332,7 @@ inputEndedConnection = nil
 
 function main()
 	local a = plr.Character:FindFirstChildOfClass("Humanoid") or plr.Character:WaitForChild("Humanoid");
-	a.PlatformStand = true
+	a.EvaluateStateMachine = false
 	--init movement
 	init(plr, camera, inputKeys);
 	initBodyMovers();
@@ -350,7 +350,7 @@ end
 
 function undo()
     local a = plr.Character:FindFirstChildOfClass("Humanoid") or plr.Character:WaitForChild("Humanoid");
-    a.PlatformStand = false -- Reset PlatformStand
+    a.EvaluateStateMachine = true -- Reset PlatformStand
 
     -- Disconnect the input connections if they were stored
     if inputBeganConnection then
